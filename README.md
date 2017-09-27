@@ -1,2 +1,2 @@
 # powershell
-Scripts poweershell pour tous!
+Scripts powershell pour tous!
