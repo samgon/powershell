@@ -2,15 +2,12 @@
 #
 #Nom du poste et utilisateurs
 #
-$RNE="0670134G"
+$RNE="067XXXX"
 $ADMINPWD="toto"
 $USER="cpe"
-$USERPWD="cpe"
+$USERPWD="titi"
 $NOMPOSTE=$RNE.substring(3)+"-"+$USER
 $IP_HORUS="10.67.A.B"
-$IP="10.67.A.B"
-$MASQUE = "255.255.255.192"#255.255.255.128 en lycée
-$PasserelleDNS = "10.67.38.61"
 #
 #On renomme le poste et on le met dans le groupe ETAB
 Rename-Computer -NewName $NOMPOSTE
@@ -32,12 +29,6 @@ Get-Localuser $user
 write-host "Liste des membres du groupe Administrateurs :"
 (Get-LocalGroupMember -Name Administrateurs).name
 #
-#On passe au réseau
-#Write-Host "Configuration du réseau"
-#Get-NetAdapter |ft InterfaceAlias,InterfaceIndex
-#$IfIndex = read-Host "Quel InterfaceIndex faut-il configurer "
-#Get-NetIPConfiguration -InterfaceIndex $IfIndex -Detailed
-#
 #Samba domain
 #
 $RegKey="HKLM:\System\CurrentControlSet\Services\LanManWorkstation\Parameters"
@@ -47,23 +38,6 @@ set-ItemProperty $RegKey -Name $RegKeyName -Value $RegKeyValue
 $RegKeyName="DomainCompatibilityMode"
 $RegKeyValue="1"
 Set-ItemProperty $RegKey -Name $RegKeyName -Value $RegKeyValue
-#
-#Acces netlogon
-#
-$RegKey="HKLM:\SYSTEM\CurrentControlSet\services\Netlogon\Parameters"
-$RegKeyName="RequireSignOrSeal"
-$RegKeyValue="1"
-Set-ItemProperty $RegKey -Name $RegKeyName -Value $RegKeyValue
-$RegKeyName="RequireStrongKey"
-$RegKeyValue="1"
-Set-ItemProperty $RegKey -Name $RegKeyName -Value $RegKeyValue
-$RegKey="HKLM:\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths"
-$RegKeyName="\\\\*\\NETLOGON"="RequireMutualAuthentication=0,RequireIntegrity=0"
-"\\\\*\\SYSVOL"="RequireMutualAuthentication=0,RequireIntegrity=0,RequirePrivacy=0"
-
-$RegKey="HKLM:\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths"
-"\\\\*\\NETLOGON"="RequireMutualAuthentication=0,RequireIntegrity=0"
-"\\\\*\\SYSVOL"="RequireMutualAuthentication=0,RequireIntegrity=0,RequirePrivacy=0"
 #
 #Verrouillage numlock
 #
@@ -104,13 +78,13 @@ New-Item -Path "C:\Users\Public\Desktop\@ASSISTANCE"  -ItemType Directory
 #
 Add-Content -Path "C:\Windows\reseau.bat" -Value "@echo off
 cls
-ECHO ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
-ECHO º           Suppression des anciennes connexions au reseau             º
-ECHO ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+ECHO ************************************************************************
+ECHO *           Suppression des anciennes connexions au reseau             *
+ECHO ************************************************************************
 net use * /delete /yes
-ECHO ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
-ECHO º                Test de presence du serveur HORUS                     º
-ECHO ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+ECHO ************************************************************************
+ECHO *                Test de presence du serveur HORUS                     *
+ECHO ************************************************************************
 ping $IP_HORUS -n 1
 
 
@@ -118,9 +92,9 @@ ping $IP_HORUS -n 1
 
 
 :fin
-ECHO ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
-ECHO º                        Erreur de NETLOGON                            º
-ECHO ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+ECHO ************************************************************************
+ECHO *                        Erreur de NETLOGON                            *
+ECHO ************************************************************************
 exit
 "
 #
