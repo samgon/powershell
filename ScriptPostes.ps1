@@ -4,9 +4,9 @@
 #
 $RNE="067XXXX"
 $ADMINPWD="toto"
-$USER="cpe"
+$USER="cpe" #moins de 9 caractères!!
 $USERPWD="titi"
-$NOMPOSTE=$RNE.substring(3)+"-"+$USER
+$NOMPOSTE=$RNE.substring(3)+"-"+$USER #15 caractères max (6 pour RNE+- reste 9 pour le compte)
 $IP_HORUS="10.67.A.B"
 #
 #On renomme le poste et on le met dans le groupe ETAB
