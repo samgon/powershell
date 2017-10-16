@@ -29,6 +29,22 @@ Get-Localuser $user
 write-host "Liste des membres du groupe Administrateurs :"
 (Get-LocalGroupMember -Name Administrateurs).name
 #
+#UAC
+#voir niveau uac
+Write-host "Niveau actuel UAC"
+(Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System).EnableLUA
+write-host "Modification UAC"
+New-ItemProperty -Path HKLM:Software\Microsoft\Windows\CurrentVersion\policies\system -Name EnableLUA -PropertyType DWord -Value 0 -Force
+pause
+#reactiver uac
+#New-ItemProperty -Path HKLM:Software\Microsoft\Windows\CurrentVersion\policies\system -Name EnableLUA -PropertyType DWord -Value 1 -Force
+#
+#desactiver lockscreen
+Write-host "Désactivation du LockScreen"
+New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization -Force
+set-ItemProperty -path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization -Name NoLockScreen -Value 1 -Force
+Write-host "Fait!"
+#
 #Samba domain
 #
 write-host "Configuration accès au domaine Samba"
