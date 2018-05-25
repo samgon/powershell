@@ -8,8 +8,8 @@ set-executionPolicy Unrestricted
 #
 #Nom du poste et utilisateurs
 #
-$RNE="0670134G"
-$ADMINPWD="CH3-COOH"
+$RNE="0670123A"
+$ADMINPWD="toutou"
 $USER="toto" 
 $USERPWD="toto"
 $NOMPOSTE=$RNE.substring(3)+"-"+$USER
