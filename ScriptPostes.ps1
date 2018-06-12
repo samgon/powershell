@@ -16,9 +16,17 @@ $NOMPOSTE=$RNE.substring(3)+"-"+$USER
 #
 $IP_HORUS="10.67.A.B"
 #
-#On renomme le poste et on le met dans le groupe ETAB
-Rename-Computer -NewName $NOMPOSTE
-Add-Computer -WorkgroupName ETAB
+#On renomme le poste et on le met dans le groupe ETAB si ce n est pas deja fait
+if ( ! ((Get-WmiObject -Class Win32_ComputerSystem).Workgroup -eq "ETAB" ) )
+{Add-Computer -WorkgroupName ETAB
+Write-Host "L'ordi est dans le groupe ETAB."}
+else
+{write-host "L'ordi est déjà dans le groupe ETAB"}
+if ( ! ((Get-WmiObject -Class Win32_ComputerSystem).name -eq $NOMPOSTE ) )
+{Rename-Computer -NewName $NOMPOSTE
+Write-Host "L'ordi est renommé $NOMPOSTE"}
+else
+{write-host "L'ordi est déjà nommé $NOMPOSTE"}
 #
 #On crée l'utilisateur avec le mdp et on le met dans le groupe administrateurs
 $UserSecurePWD=(ConvertTo-SecureString -Force -AsPlainText -String $UserPWD)
